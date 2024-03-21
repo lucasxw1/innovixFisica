@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  postgres-service:
+    image: postgres:latest
+    networks:
+      - innovix-network
+    restart: always
+    environment:
+      - POSTGRES_USER=universityInnovix
+      - POSTGRES_PASSWORD=abc12345
+      - POSTGRES_DB=innovix
+
+  innovix-web-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - innovix-network
+    depends_on:
+      - postgres-service
+
+networks:
+  innovix-network:
+    driver: bridge
